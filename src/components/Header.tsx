@@ -23,9 +23,7 @@ export function Header() {
       <header
         className={cn(
           "fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all duration-300",
-          isScrolled 
-            ? "h-[60px] lg:h-[65px]" 
-            : "h-[70px] sm:h-[80px] lg:h-[90px]"
+          isScrolled ? "h-[65px]" : "h-[90px]"
         )}
       >
         <div className="container mx-auto h-full">
@@ -97,35 +95,29 @@ export function Header() {
             <div className="flex items-start justify-end gap-0 w-full">
 
               {/* ===== MOBILE HEADER ROW ===== */}
-              <div className="lg:hidden flex items-center justify-between w-full px-4 gap-4">
+              <div className="lg:hidden flex items-center justify-between w-full relative">
                 
-                {/* Menu Button - Left */}
-                <button 
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="flex-shrink-0 p-1.5 hover:bg-muted rounded-lg transition"
-                >
+                {/* Menu */}
+                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                   {isMobileMenuOpen ? (
-                    <X className="w-6 h-6 text-navy-dark" />
+                    <X className="w-7 h-7 text-navy-dark" />
                   ) : (
-                    <Menu className="w-6 h-6 text-navy-dark" />
+<Menu className="w-6 h-6 text-navy-dark" />
                   )}
                 </button>
 
                 {/* Center Logo */}
-                <Link to="/" className="flex-1 flex justify-center">
+                <Link to="/" className="absolute left-1/2 -translate-x-1/2">
                   <img
                     src="/logo11.png"
                     alt="Global Imports Logo"
-                    className="h-12 object-contain"
+                    className="h-10 object-contain"
                   />
                 </Link>
 
-                {/* Call Button - Right */}
-                <a 
-                  href="tel:+919270109911"
-                  className="flex-shrink-0 p-2 bg-gold rounded-lg hover:bg-gold/90 transition active:scale-95"
-                >
-                  <Phone className="w-5 h-5 text-navy-dark" />
+                {/* Call */}
+                <a href="tel:+919270109911">
+<Phone className="w-6 h-6 text-gold" />
                 </a>
               </div>
 
