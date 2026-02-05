@@ -11,29 +11,32 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 60);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 60);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      {/* ================= HEADER ================= */}
       <header
         className={cn(
           "fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all duration-300",
-          isScrolled ? "h-[65px]" : "h-[90px]"
+          isScrolled 
+            ? "h-[60px] lg:h-[65px]" 
+            : "h-[70px] sm:h-[80px] lg:h-[90px]"
         )}
       >
         <div className="container mx-auto h-full">
-          <div className="grid grid-cols-3 items-center h-full px-4">
+          <div className="grid grid-cols-3 items-center h-full">
 
-            {/* LEFT — Desktop Logo */}
+            {/* LEFT — LOGO (Desktop) */}
             <div className="flex items-center">
               <Link to="/" className="hidden lg:block">
                 <img
                   src="/logo11.png"
-                  alt="Logo"
+                  alt="Global Imports Logo"
                   className={cn(
                     "object-contain transition-all duration-300",
                     isScrolled ? "h-12" : "h-20 lg:h-24"
@@ -42,17 +45,17 @@ export function Header() {
               </Link>
             </div>
 
-            {/* CENTER — Desktop Nav */}
+            {/* CENTER — NAVIGATION */}
             <nav className="hidden lg:flex items-center justify-center gap-12 font-semibold text-navy-dark">
-              <Link to="/">Home</Link>
-              <Link to="/about">About</Link>
+              <Link to="/" className="hover:text-gold transition">Home</Link>
+              <Link to="/about" className="hover:text-gold transition">About</Link>
 
               <div
                 className="relative"
                 onMouseEnter={() => setIsServicesOpen(true)}
                 onMouseLeave={() => setIsServicesOpen(false)}
               >
-                <div className="flex items-center gap-1 cursor-pointer">
+                <div className="flex items-center gap-1 cursor-pointer hover:text-gold transition">
                   <Link to="/services">Services</Link>
                   <ChevronDown
                     className={cn(
@@ -73,7 +76,11 @@ export function Header() {
                         ["Customs Documentation","/services/customs-documentation"],
                         ["Quality Inspection","/services/quality-inspection"],
                       ].map(([label, href]) => (
-                        <Link key={href} to={href} className="block px-5 py-3">
+                        <Link
+                          key={href}
+                          to={href}
+                          className="block px-5 py-3 text-[#f8f4e1] hover:text-[#fcb25d]"
+                        >
                           {label}
                         </Link>
                       ))}
@@ -82,94 +89,87 @@ export function Header() {
                 )}
               </div>
 
-              <Link to="/products">Products</Link>
-              <Link to="/contact">Contact</Link>
+              <Link to="/products" className="hover:text-gold transition">Products</Link>
+              <Link to="/contact" className="hover:text-gold transition">Contact</Link>
             </nav>
 
-            {/* RIGHT — Mobile Header + Desktop Call */}
-            <div className="flex items-center justify-end w-full">
+            {/* RIGHT — CALL BUTTON + MOBILE HEADER */}
+            <div className="flex items-start justify-end gap-0 w-full">
 
-              {/* ===== MOBILE HEADER ===== */}
-              <div className="lg:hidden flex items-center justify-between w-full relative">
-
-                {/* Menu */}
-                <button onClick={() => setIsMobileMenuOpen(true)}>
-                  <Menu className="w-6 h-6 text-navy-dark" />
+              {/* ===== MOBILE HEADER ROW ===== */}
+              <div className="lg:hidden flex items-center justify-between w-full px-4 gap-4">
+                
+                {/* Menu Button - Left */}
+                <button 
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="flex-shrink-0 p-1.5 hover:bg-muted rounded-lg transition"
+                >
+                  {isMobileMenuOpen ? (
+                    <X className="w-6 h-6 text-navy-dark" />
+                  ) : (
+                    <Menu className="w-6 h-6 text-navy-dark" />
+                  )}
                 </button>
 
                 {/* Center Logo */}
-                <Link to="/" className="absolute left-1/2 -translate-x-1/2">
+                <Link to="/" className="flex-1 flex justify-center">
                   <img
                     src="/logo11.png"
-                    alt="Logo"
-                    className="h-10 object-contain"
+                    alt="Global Imports Logo"
+                    className="h-12 object-contain"
                   />
                 </Link>
 
-                {/* Call */}
-                <a href="tel:+919270109911">
-                  <Phone className="w-6 h-6 text-gold" />
+                {/* Call Button - Right */}
+                <a 
+                  href="tel:+919270109911"
+                  className="flex-shrink-0 p-2 bg-gold rounded-lg hover:bg-gold/90 transition active:scale-95"
+                >
+                  <Phone className="w-5 h-5 text-navy-dark" />
                 </a>
               </div>
 
-              {/* ===== DESKTOP CALL ===== */}
+              {/* ===== DESKTOP CALL BUTTON ===== */}
               <a
                 href="tel:+919270109911"
-                className="hidden lg:flex items-center gap-3 px-7 py-3 rounded-full font-bold shadow-lg"
-                style={{ backgroundColor: "#E9D8C3", color: "#3B2A1A" }}
+                className={cn(
+                  "hidden lg:flex items-center gap-3 rounded-full font-bold shadow-lg transition-all duration-300 group",
+                  "hover:-translate-y-1 hover:shadow-2xl hover:scale-[1.04] hover:bg-[#f3e6d7]",
+                  isScrolled ? "px-5 py-2 text-sm" : "px-7 py-3"
+                )}
+                style={{
+                  backgroundColor: "#E9D8C3",
+                  color: "#3B2A1A"
+                }}
               >
-                <Phone className="w-5 h-5" />
-                +91 9270109911
+                <Phone className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                <span className="tracking-wide">+91 9270109911</span>
               </a>
             </div>
           </div>
         </div>
       </header>
 
-      {/* ================= MOBILE MENU DRAWER ================= */}
+      {/* MOBILE MENU */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-white z-50 lg:hidden flex flex-col">
+        <div className="fixed inset-0 bg-white z-40 pt-[80px] px-4 sm:px-8 lg:hidden overflow-y-auto">
+          <nav className="flex flex-col gap-4 sm:gap-6 text-base sm:text-lg font-semibold text-navy-dark pb-8">
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">Home</Link>
+            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">About</Link>
+            <Link to="/products" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">Products</Link>
+            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">Contact</Link>
 
-          {/* Top Bar */}
-          <div className="flex items-center justify-between h-[80px] px-6 border-b">
-            <button onClick={() => setIsMobileMenuOpen(false)}>
-              <X className="w-7 h-7 text-navy-dark" />
-            </button>
-
-            <img src="/logo11.png" alt="Logo" className="h-10" />
-
-            <a
-              href="tel:+919270109911"
-              className="bg-green-400 p-2.5 rounded-full shadow-md"
-            >
-              <Phone className="w-5 h-5 text-white" />
-            </a>
-          </div>
-
-          {/* Links */}
-          <div className="flex-1 overflow-y-auto px-8 py-8">
-            <nav className="flex flex-col gap-7 text-lg font-semibold text-navy-dark">
-
-              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
-              <Link to="/products" onClick={() => setIsMobileMenuOpen(false)}>Products</Link>
-              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
-
-              <div className="pt-6 border-t">
-                <p className="font-bold mb-4 text-base">Services</p>
-
-                <div className="flex flex-col gap-4 font-medium text-[15px]">
-                  <Link to="/services/global-sourcing" onClick={() => setIsMobileMenuOpen(false)}>Global Sourcing</Link>
-                  <Link to="/services/export-management" onClick={() => setIsMobileMenuOpen(false)}>Export Management</Link>
-                  <Link to="/services/import-compliance" onClick={() => setIsMobileMenuOpen(false)}>Import Compliance</Link>
-                  <Link to="/services/logistics-freight" onClick={() => setIsMobileMenuOpen(false)}>Logistics & Freight</Link>
-                  <Link to="/services/customs-documentation" onClick={() => setIsMobileMenuOpen(false)}>Customs Documentation</Link>
-                  <Link to="/services/quality-inspection" onClick={() => setIsMobileMenuOpen(false)}>Quality Inspection</Link>
-                </div>
+            <div className="border-t pt-4 mt-2">
+              <p className="font-semibold mb-3 text-sm sm:text-base">Services</p>
+              <div className="space-y-2 text-sm sm:text-base">
+                <Link to="/services/global-sourcing" onClick={() => setIsMobileMenuOpen(false)} className="block py-1">Global Sourcing</Link>
+                <Link to="/services/export-management" onClick={() => setIsMobileMenuOpen(false)} className="block py-1">Export Management</Link>
+                <Link to="/services/import-compliance" onClick={() => setIsMobileMenuOpen(false)} className="block py-1">Import Compliance</Link>
+                <Link to="/services/logistics-freight" onClick={() => setIsMobileMenuOpen(false)} className="block py-1">Logistics & Freight</Link>
+                <Link to="/services/quality-inspection" onClick={() => setIsMobileMenuOpen(false)} className="block py-1">Quality Inspection</Link>
               </div>
-
-            </nav>
-          </div>
+            </div>
+          </nav>
         </div>
       )}
     </>
