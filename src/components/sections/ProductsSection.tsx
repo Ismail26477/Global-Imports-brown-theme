@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollAnimation, useStaggerAnimation } from "@/hooks/useScrollAnimation";
 
 const categories = [
   {
@@ -86,6 +87,15 @@ const categories = [
 export function ProductsSection() {
   const [selectedCategory, setSelectedCategory] =
     useState<(typeof categories)[0] | null>(null);
+  
+  const header = useScrollAnimation({ 
+    animationClass: 'scroll-fade-in',
+    threshold: 0.15 
+  });
+  const cards = useStaggerAnimation(6, { 
+    animationClass: 'scroll-scale-in',
+    threshold: 0.2 
+  });
 
   const scrollToContact = () => {
     setSelectedCategory(null);
@@ -96,7 +106,7 @@ export function ProductsSection() {
   return (
     <section id="products" className="section-padding bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12 md:mb-16">
+        <div ref={header.elementRef} className={`text-center mb-12 md:mb-16 ${header.animationClass}`}>
           <span className="text-gold font-medium uppercase tracking-wider text-sm">
             Our Expertise
           </span>
@@ -109,12 +119,12 @@ export function ProductsSection() {
         </div>
 
         {/* ✅ 2 cards per row on mobile */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+        <div ref={cards.containerRef} className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {categories.map((category, index) => (
             <div
               key={index}
               onClick={() => setSelectedCategory(category)}
-              className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm card-hover"
+              className={`group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm card-hover hover-lift hover-glow ${cards.getItemClass(index)}`}
             >
               <div className="relative h-32 md:h-48 overflow-hidden">
                 <img
@@ -176,7 +186,7 @@ export function ProductsSection() {
                 {selectedCategory.products.map((product, index) => (
                   <span
                     key={index}
-                    className="px-4 py-2 bg-muted rounded-full text-sm font-medium text-navy"
+                    className={`px-4 py-2 bg-muted rounded-full text-sm font-medium text-navy hover-lift transition-all duration-300 hover:bg-gold hover:text-navy-dark cursor-pointer stagger-item-${index + 1}`}
                   >
                     {product}
                   </span>

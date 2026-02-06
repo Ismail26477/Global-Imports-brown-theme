@@ -1,3 +1,5 @@
+import { useScrollAnimation, useStaggerAnimation } from "@/hooks/useScrollAnimation";
+
 const steps = [
   {
     image: "/services/global-sourcing.jpg",
@@ -38,11 +40,20 @@ const steps = [
 ];
 
 export function ProcessSection() {
+  const header = useScrollAnimation({ 
+    animationClass: 'scroll-fade-in',
+    threshold: 0.15 
+  });
+  const cards = useStaggerAnimation(6, { 
+    animationClass: 'scroll-fade-in-up',
+    threshold: 0.2 
+  });
+
   return (
     <section id="process" className="section-padding bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Heading */}
-        <div className="text-center mb-12 md:mb-16">
+        <div ref={header.elementRef} className={`text-center mb-12 md:mb-16 ${header.animationClass}`}>
           <span className="text-gold font-medium uppercase tracking-wider text-xs md:text-sm">
             Our Process
           </span>
@@ -55,11 +66,11 @@ export function ProcessSection() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+        <div ref={cards.containerRef} className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
           {steps.map((step, index) => (
             <div
               key={index}
-              className="relative bg-white rounded-2xl p-4 md:p-8 shadow-sm card-hover group"
+              className={`relative bg-white rounded-2xl p-4 md:p-8 shadow-sm card-hover group hover-lift hover-glow ${cards.getItemClass(index)}`}
             >
               {/* Step Number */}
               <div className="absolute -top-3 -left-3 w-9 h-9 md:w-12 md:h-12 rounded-full bg-gold flex items-center justify-center font-heading font-bold text-sm md:text-xl text-navy-dark shadow-lg">

@@ -2,6 +2,7 @@
 
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollAnimation, useStaggerAnimation } from "@/hooks/useScrollAnimation";
 
 const highlights = [
   "Direct partnerships with verified manufacturers",
@@ -23,6 +24,19 @@ const stats = [
 ];
 
 export function AboutSection() {
+  const leftContent = useScrollAnimation({ 
+    animationClass: 'scroll-fade-in-left',
+    threshold: 0.15 
+  });
+  const rightContent = useScrollAnimation({ 
+    animationClass: 'scroll-fade-in-right',
+    threshold: 0.15 
+  });
+  const stats = useStaggerAnimation(4, { 
+    animationClass: 'scroll-scale-in',
+    threshold: 0.2 
+  });
+
   const scrollToContact = () => {
     const element = document.querySelector("#contact");
     if (element) {
@@ -35,7 +49,7 @@ export function AboutSection() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
-          <div>
+          <div ref={leftContent.elementRef} className={leftContent.animationClass}>
             <span className="text-gold font-medium uppercase tracking-wider text-xs sm:text-sm">
               About Us
             </span>
@@ -55,7 +69,7 @@ export function AboutSection() {
 
             <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
               {highlights.map((highlight, index) => (
-                <div key={index} className="flex items-center gap-3">
+                <div key={index} className="flex items-center gap-3 hover-lift p-2 rounded-lg">
                   <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-gold shrink-0" />
                   <span className="text-sm sm:text-base text-navy-dark">{highlight}</span>
                 </div>
@@ -85,36 +99,36 @@ export function AboutSection() {
           </div>
 
           {/* Right Content - Images */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <div ref={rightContent.elementRef} className={`grid grid-cols-2 gap-3 sm:gap-4 ${rightContent.animationClass}`}>
             <div className="space-y-3 sm:space-y-4">
-              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg">
+              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg hover-lift hover-glow">
                 <img
                   src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80"
                   alt="Warehouse operations"
-                  className="w-full h-32 sm:h-48 object-cover"
+                  className="w-full h-32 sm:h-48 object-cover transition-transform duration-500 hover:scale-110"
                 />
               </div>
-              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg">
+              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg hover-lift hover-glow">
                 <img
                   src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80"
                   alt="Global shipping"
-                  className="w-full h-40 sm:h-64 object-cover"
+                  className="w-full h-40 sm:h-64 object-cover transition-transform duration-500 hover:scale-110"
                 />
               </div>
             </div>
             <div className="space-y-3 sm:space-y-4 pt-4 sm:pt-8">
-              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg">
+              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg hover-lift hover-glow">
                 <img
                   src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=600&q=80"
                   alt="Container shipping"
-                  className="w-full h-40 sm:h-64 object-cover"
+                  className="w-full h-40 sm:h-64 object-cover transition-transform duration-500 hover:scale-110"
                 />
               </div>
-              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg">
+              <div className="rounded-lg sm:rounded-2xl overflow-hidden shadow-lg hover-lift hover-glow">
                 <img
                   src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=600&q=80"
                   alt="Quality inspection"
-                  className="w-full h-32 sm:h-48 object-cover"
+                  className="w-full h-32 sm:h-48 object-cover transition-transform duration-500 hover:scale-110"
                 />
               </div>
             </div>
@@ -122,11 +136,16 @@ export function AboutSection() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mt-12 md:mt-16">
-          {stats.map((stat, index) => (
+        <div ref={stats.containerRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mt-12 md:mt-16">
+          {[
+            { value: "16+", label: "Years in Global Trade" },
+            { value: "Expert", label: "Professional Management" },
+            { value: "Global", label: "China & 50+ Countries" },
+            { value: "Multi", label: "Diverse Solutions" },
+          ].map((stat, index) => (
             <div
               key={index}
-              className="text-center p-3 sm:p-6 bg-white rounded-lg sm:rounded-xl shadow-sm card-hover"
+              className={`text-center p-3 sm:p-6 bg-white rounded-lg sm:rounded-xl shadow-sm card-hover hover-scale hover-glow ${stats.getItemClass(index)}`}
             >
               <div className="font-heading text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gold mb-1 sm:mb-2">
                 {stat.value}
